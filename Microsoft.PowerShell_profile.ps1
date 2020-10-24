@@ -32,11 +32,11 @@ sal chrme 	'C:\Program Files (x86)\Google\Chrome\Application\Chrome.exe'
 sal edg 	'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
 sal word 	'C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE'
 
-sal spotify 	"$env:appdata\Spotify\spotify.exe"
+sal spotify "$env:appdata\Spotify\spotify.exe"
 sal zoom 	"$env:appdata\Zoom\bin\Zoom.exe"
 sal python	"$env:localappdata\Programs\Python\Python38\python.exe"
 sal pip		"$env:localappdata\Programs\Python\Python38\Scripts\pip.exe"
-sal subl    	"$env:localappdata\Programs\Sublime Text Build 3211 x64\subl.exe"
+sal subl    "$env:localappdata\Programs\Sublime Text Build 3211 x64\subl.exe"
 
 # -------------------------- Function Definitions ----------------------------------------------------------
 function uchrome($val){
@@ -56,12 +56,6 @@ function edge($val){
 function hist(){
 	vi (Get-PSReadLineOption).HistorySavePath
 }
-function grep(){
-	[CmdletBinding()]
-	Param([Parameter(ValueFromPipeline)] $obj)
-	Param($filter)
-	Write-Host (? $obj Name -CMatch '$filter*').Name
-}
 function mklink ($target, $link) {
     New-Item -Path $link -ItemType SymbolicLink -Value $target
 }
@@ -74,4 +68,13 @@ function bing() {
 	$search = "bing.com/search?q=$search"
 	echo $search
 	edge $search
+}
+function grep(){
+	[CmdletBinding()]
+	Param(
+		[Parameter(Position=0)] $filter, 
+		[Parameter(ValueFromPipeline)] $obj
+	)
+
+	$obj -match $filter | Foreach {$matches[0]}
 }
