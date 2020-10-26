@@ -31,7 +31,7 @@ set t_ut=						"Fix BCE to allow consistent colorscheme background
 
 set foldmethod=syntax			"Automatically creates folds based off syntax
 " Mapping spacebar to (recursively if needed) toggle folds encountered
-nnoremap <silent><space> :zA
+nnoremap <silent><space> zA
 
 set incsearch					"Enables incremental searching
 set hlsearch					"Enables search highlighting
