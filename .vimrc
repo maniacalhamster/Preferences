@@ -30,8 +30,9 @@ color onedark					"Modded version of onedark.vim personally used for colorscheme
 set t_ut=						"Fix BCE to allow consistent colorscheme background
 
 set foldmethod=syntax			"Automatically creates folds based off syntax
+set foldlevel=2					"Files open with only foldlevels of 2+ closed
 " Mapping spacebar to (recursively if needed) toggle folds encountered
-nnoremap <silent><space> zA
+nnoremap <silent><space> za
 
 set incsearch					"Enables incremental searching
 set hlsearch					"Enables search highlighting
