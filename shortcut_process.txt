@@ -1,0 +1,66 @@
+Create shortcut in Windows Terminal
+-----------------------------------o
+
+$shell = New-Object -ComObject WScript.Shell
+--------------------------------------------o
+	- Creates an instance of WScript.Shell object, referring to it as 'shell'
+
+$wt = $shell.CreateShortcut("$env:userprofile\Desktop\wt.lnk")
+--------------------------------------------------------------o
+	- Creates a shortcut with that shell instance with the .CreateShortcut command, referring
+		to it as 'wt'
+	- userprofile refers to User's 'home' directory, in this case wanting to store the 
+		shortcut (wt.lnk) on the user's desktop
+		
+$wt
+---o
+	- Calling the wt shortcut itself will reveal the properties of the shortcut:
+		FullName	- name of the shortcut with a full path to it (set upon creation)
+		Arguments	- optional arguments to pass into the command
+		Description	- descriptions user may want to specify
+		Hotkey		- hotkey can be set to run the shortcut
+		IconLocation	- path to file whose icon will be used for this shortcut
+		RelativePath	- ??
+		TargetPath	- path to the file that this shortcut will run
+		WindowStyle	- ??
+		WorkingDirectory  working directory when the target file is run from shortcut
+
+	- User can change any of the properties by referring to said property and setting it to 
+		a value (e.g. $wt.Hotkey='Alt+Ctrl+t')
+
+$wt.Description='Shorcut for opening Windows Terminal (and applying hot key)
+----------------------------------------------------------------------------o
+	- Sets appropriate description for shortcut
+
+$wt.HotKey='Alt+Ctrl+t'
+-----------------------o
+	- Sets up a hotkey for the shorcut (chose the shorcut for terminal in linux)
+
+
+$wt.IconLocation=(ps | ? ProcessName -Match 'windowsterminal').path
+-------------------------------------------------------------------o
+	- Filters list of running process for 'windowsterminal' (case insensitive with -Match)
+		and grabs only the path to pass into $wt's IconLocation property
+
+$wt.TargetPath="$env:localappdata\Microsoft\WindowsApps\wt.exe"
+--------------------------------------------------------------o
+	- localappdata refers to Users AppData\Local\ directory and that is where wt.exe that
+		runs windows terminal is stored
+
+$wt.WorkingDirectory="$env:localappdata\Microsoft\WindowsApps\"
+---------------------------------------------------------------o
+	- again localappdata refers to Users AppData\Local directory where wt.exe is stored
+
+$wt.save()
+----------o
+	- After all the property configurations are done with, the user saves which will finally
+		'start' the shorcut (will pop up where it should be and will function as set up!)
+
+
+EXTRA EXTRA
+-----------
+	I tend to prefer my shortcuts with hotkeys out of sight and out of mind, the path for the
+	shortcut just being a necesity to set up a hotkey for that command than something I would
+	want to point and click.
+	The solution to this is to move it to the following address:
+		[mv $env:userprofile\Desktop\wt.lnk $env:appdata\Microsoft\Windows\Start Menu\Programs\]
