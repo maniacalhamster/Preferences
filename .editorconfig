@@ -14,7 +14,7 @@ indent_style = tab
 
 [.vimrc]
 indent_size = 4
-trim_trailing_whitespace = false
+trim_trailing_whitespace = true
 
 [*.{ps1, txt, md}]
 indent_size = 4
