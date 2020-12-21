@@ -1,9 +1,16 @@
 echo "
-    o O O        \ \    / / ___     | |     __      ___    _ __     ___            /   \   | |__   __ _      _ _  
-   o        ___   \ \/\/ / / -_)    | |    / _|    / _ \  | '  \   / -_)    ___    | - |   | / /  / _' |    | '_| 
-  TS__[O]  |___|   \_/\_/  \___|   _|_|_   \__|_   \___/  |_|_|_|  \___|   |___|   |_|_|   |_\_\  \__,_|   _|_|_  
- {======|_|'''''|_|'''''|_|'''''|_|'''''|_|'''''|_|'''''|_|'''''|_|'''''|_|'''''|_|'''''|_|'''''|_|'''''|_|'''''| 
-./o--000' '-0-0-' '-0-0-' '-0-0-' '-0-0-' '-0-0-' '-0-0-' '-0-0-' '-0-0-' '-0-0-' '-0-0-' '-0-0-' '-0-0-' '-0-0-' 
+                __      __         _                                    
+    o O O       \ \    / /  ___   | |   __    ___    _ __     ___ 
+   o             \ \/\/ /  / -_)  | |  / _|  / _ \  | '  \   / -_)
+  TS__[O]  _____  \_/\_/   \___|  |_|  \__|  \___/  |_|_|_|  \___|
+ {======|_|'''''|_|'''''|_|'''''|_|'|_|'''|_|'''''|_|'''''|_|'''''|
+./o--000' '0---0' '0---0' '0---0' '0' '0-0' '0---0' '0---0' 'o---0'
+                           _     _ 
+                          / \   | |__   _ _    _ _          O O o
+                         | - |  | / /  / _'|  | '_|              o
+ _____   _____   _____   |_|_|  |_\_\  \_,_|  |_|_   _____  [O]__ST
+|'''''|_|'''''|_|'''''|_|'''''|_|''''|_|'''|_|''''|_|'''''|_|======}
+'0---0' '0---0' '0---0' '0---0' '0--0' '0-0' '0--0' '0---0' '000--o\.
 "
 
 #	Not quite sure what to put here but some ideas would be:
@@ -11,13 +18,15 @@ echo "
 #		- IP Address
 #		- Current Time
 
-# -------------------------- Window Preferences   ----------------------------------------------------------
+# -------------------------- Window Preferences   -----------------------------
 
-# -------------------------- Alias Configurations ----------------------------------------------------------
+# -------------------------- Alias Configurations -----------------------------
 rm alias:\type
 
+$default =		"$env:localappdata\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\default.json"
 $settings = 	"$env:localappdata\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
-$ubuntu = 		"$env:userprofile\Documents\Virtual Machines\Ubuntu Server 64-bit\Ubuntu Server 64-bit.vmx"
+$ubuntu = 		""
+$programs = 	"$env:localappdata\Programs"
 
 sal vi 		vim
 sal type 	gcm
@@ -25,35 +34,21 @@ sal unzip 	expand-archive
 sal lsblk 	get-disk
 sal lspart 	get-partition
 sal lsvol 	get-volume
+sal make	nmake
 
-sal chrme 	'C:\Program Files (x86)\Google\Chrome\Application\Chrome.exe' 
 sal edg 	'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
-sal word 	'C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE'
 sal vm		'C:\Program Files (x86)\VMware\VMware Workstation\VMRun.exe'
 
 sal spotify	"$env:appdata\Spotify\spotify.exe"
 sal zoom 	"$env:appdata\Zoom\bin\Zoom.exe"
-sal python	"$env:localappdata\Programs\Python\Python38\python.exe"
-sal pip		"$env:localappdata\Programs\Python\Python38\Scripts\pip.exe"
-sal subl   	"$env:localappdata\Programs\Sublime Text Build 3211 x64\subl.exe"
-sal javac   "$env:localappdata\Programs\jdk-15.0.1\bin\javac.exe"
-sal java    "$env:localappdata\Programs\jdk-15.0.1\bin\java.exe"
 
-# -------------------------- Function Definitions ----------------------------------------------------------
-function uchrome($val){
-	chrme --profile-directory="Default" $val
-}
-function chrome($val){
-	chrme --profile-directory="Profile 1" $val
-}
-
+# -------------------------- Function Definitions -----------------------------
 function uedge($val){
 	edg --profile-directory="Profile 1" $val
 }
 function edge($val){
 	edg --profile-directory="Default" $val
 }
-
 function hist(){
 	vi (Get-PSReadLineOption).HistorySavePath
 }
@@ -63,11 +58,26 @@ function grep(){
 	Param($filter)
 	Write-Host (? $obj Name -CMatch '$filter*').Name
 }
+function touch(){
+	if($args[0]){
+		if(test-path($args[0])){
+			(Get-ChildItem $args[0]).LastWriteTime=Get-Date
+		}
+		else{
+			New-Item $args[0]
+		}
+	}
+}
 function mklink ($target, $link) {
     New-Item -Path $link -ItemType SymbolicLink -Value $target
 }
 function sudo() {
-    start powershell -Verb runas -ArgumentList ('-NoExit', '-Command', 'cd {0}' -f "$(pwd)")
+	if($args[0].length -eq 0 -or $args[0] -eq 'su'){
+		start powershell -Verb runas -ArgumentList ('-NoExit', '-Command', "cd `'$(pwd)`'")
+	}
+	else{
+		start powershell -Verb runas -ArgumentList ('-Command', "$args")
+	}
 }
 function bing() {
 	$search = $args[0]
@@ -90,3 +100,49 @@ function ubuntu(){
 
 	ssh ubuntu
 }
+function devenv(){
+	pushd 'C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build'
+	cmd /c "vcvarsall.bat $args&set" |
+	foreach{
+		if ($_ -match "="){
+			$v = $_.split("=")
+			$key=$v[0]
+			$dev=$v[1]
+			$path="ENV:\$key"
+			if(test-path $path){
+				$orig=(get-item -path $path).value;
+				if($orig -ne $dev){
+					echo "Overwriting old var: $key"
+					set-item -force -path $path -value $dev
+				}
+			}
+			else{
+				echo "Writing new var: $key"
+				set-item -path $path -value $dev
+			}
+		}
+	}
+	popd
+}
+function la{
+	ls -Force
+}
+
+# readline configuration. Requires version 2.0, if you have 1.2 convert to `Set-PSReadlineOption -TokenType`
+Set-PSReadlineOption -Color @{
+	"Command" = [ConsoleColor]::White
+		"Parameter" = [ConsoleColor]::Green
+		"Operator" = [ConsoleColor]::Magenta
+		"Variable" = [ConsoleColor]::Green
+		"String" = [ConsoleColor]::Yellow
+		"Number" = [ConsoleColor]::Blue
+		"Type" = [ConsoleColor]::Cyan
+		"Comment" = [ConsoleColor]::DarkCyan
+}
+
+# colorizing powershell ls
+import-module pscolor
+$global:PSColor.File.Directory.Color='Blue'
+$global:PSColor.File.Executable.Color='Green'
+$global:PSColor.File.Compressed.Color='Red'
+$global:PSColor.File.Code.Color='Cyan'
