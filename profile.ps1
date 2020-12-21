@@ -23,6 +23,7 @@ echo "
 # -------------------------- Alias Configurations -----------------------------
 rm alias:\type
 
+$profile =		"$env:userprofile\Documents\WindowsPowershell\profile.ps1"
 $default =		"$env:localappdata\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\default.json"
 $settings = 	"$env:localappdata\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
 $ubuntu = 		""
