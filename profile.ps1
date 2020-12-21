@@ -23,7 +23,7 @@ echo "
 # -------------------------- Alias Configurations -----------------------------
 rm alias:\type
 
-$profile =		"$env:userprofile\Documents\WindowsPowershell\profile.ps1"
+$profile = 		"$env:userprofile\Documents\WindowsPowershell\profile.ps1"
 $default =		"$env:localappdata\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\default.json"
 $settings = 	"$env:localappdata\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
 $ubuntu = 		""
@@ -103,8 +103,14 @@ function ubuntu(){
 }
 function devenv(){
 	pushd 'C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build'
+	if(-not $args){
+		$args=$env:PROCESSOR_ARCHITECTURE
+	}
 	cmd /c "vcvarsall.bat $args&set" |
 	foreach{
+		if ($_ -match "Error"){
+			break;
+		}
 		if ($_ -match "="){
 			$v = $_.split("=")
 			$key=$v[0]
@@ -113,14 +119,17 @@ function devenv(){
 			if(test-path $path){
 				$orig=(get-item -path $path).value;
 				if($orig -ne $dev){
-					echo "Overwriting old var: $key"
+					echo "Changed: $key"
 					set-item -force -path $path -value $dev
 				}
 			}
 			else{
-				echo "Writing new var: $key"
+				echo "New Var: $key"
 				set-item -path $path -value $dev
 			}
+		}
+		else { 
+			echo $_
 		}
 	}
 	popd
