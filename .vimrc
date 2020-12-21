@@ -1,7 +1,6 @@
-" ~/.vimrc
-"
 " Personal Preferences for vim on Windows 10 + Ubuntu Servers (VMs and school)
 " Sat Dec 20, 2020
+
 set rtp+=~/.vim		                " Add .vim directory to runtimepath
 set pythonthreedll=python39.dll     " Set Python3dll to be used
 set encoding=utf-8                  " Set vim to use utf-8 encoding
@@ -99,4 +98,3 @@ nnoremap <C-A><C-L> :wincmd l<CR>
 nnoremap <C-A><C-J> :wincmd j<CR>
 nnoremap <C-A><C-K> :wincmd k<CR>
 " =============================================================================
-" ^^ Alongside YouCompleteMe, vim is best IDE

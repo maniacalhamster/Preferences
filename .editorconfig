@@ -6,13 +6,20 @@ insert_final_newline = true
 charset = utf-8
 indent_style = tab
 
-[*.{.vimrc, .ps1, .txt}]
+[.*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+indent_style = tab
+
+[.vimrc]
+indent_size = 4
+trim_trailing_whitespace = false
+
+[*.{ps1, txt, md}]
 indent_size = 4
 trim_trailing_whitespace = false
 
 [*.json]
 indent_size = 2
 trim_trailing_whitespace = true
-
-[*.md]
-trim_trailing_whitespace = false
