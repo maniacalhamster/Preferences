@@ -6,11 +6,11 @@ set pythonthreedll=python39.dll     " Set Python 3 DLL to be used
 set encoding=utf-8                  " Set vim to use utf-8 encoding
 
 " Required for Vundle =========================================================
-set nocompatible                    " No strict compatability w/ vi (cool stuff)
+set nocompatible                    " No strict compatibility w/ vi (cool stuff)
 filetype off                        " Temporary?        -Required for Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
 
-call vundle#begin('~/.vim/bundle')  " Add plugins between vundle# begin and end
+call vundle#begin('~/.vim/bundle')  " Add plugins between Vundle# begin and end
 
 " Vundle Plugin Manager installed using Vundle          -Required for Vundle
 " Onedark Color/Theme   installed using Vundle
@@ -28,11 +28,11 @@ filetype plugin indent on           " Turn on plugin?   - Required for Vundle
 
 " Brief help
 " :PluginList  - lists configured plugins
-" :PluginInstall - installs plugins; append '!' to do (:PluginUpdate)
+" :PluginInstall - installs plugins; append '!' to do (:Plugin Update)
 " :PluginSearch foo - searches for foo; append '!' to refresh local cache
 " :PluginClean  - confirms unused plugins removed; '!' auto approves
 "
-" :h vundle for more details
+" :h Vundle for more details
 " End of Vundle Requirements ==================================================
 
 set colorcolumn=80                  " Colored column guideline at col 80
@@ -56,13 +56,13 @@ set nojoinspaces                    " No whitespaces after .?! using (J)oin
 syntax on                           " Syntax highlighting on
 color onedark                       " preferred colorscheme here
 
-" Setup YouCompleteMe support for vimtex
+" Setup YouCompleteMe support for Vimtex
 if !exists('g:ycm_semantic_triggers')
     let g:ycm_semantic_triggers = {}
 endif
 au VimEnter * let g:ycm_semantic_triggers.tex=g:vimtex#re#youcompleteme
 
-" Set vimtex viewer to sumatrapdf and set options
+" Set Vimtex viewer to sumatrapdf and set options
 let g:vimtex_view_general_viewer='SumatraPDF'
 let g:vimtex_view_general_options
             \ = '-reuse-instane -forward-search @tex @line @pdf'
@@ -77,7 +77,7 @@ set spellfile=~/.vim/spell/en.utf-8.add     " Specify location of 'dictionary'
 inoremap <C-l> <c-g>u<Esc>[s1z=<C-o>$a<c-g>u
 
 set undodir=~/.vim/undodir          " Directory for undofiles specified
-set directory=~/.vim/swp//          " Directory for swap files specified
+set directory=~/.vim/.swp//          " Directory for swap files specified
 set undofile                        " Persistent undo enabled
 
 set foldmethod=syntax               " Automatic fold creation from syntax
