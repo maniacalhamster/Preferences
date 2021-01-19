@@ -77,7 +77,7 @@ set spellfile=~/.vim/spell/en.utf-8.add     " Specify location of 'dictionary'
 inoremap <C-l> <c-g>u<Esc>[s1z=<C-o>$a<c-g>u
 
 set undodir=~/.vim/undodir          " Directory for undofiles specified
-set directory=~/.vim/.swp//          " Directory for swap files specified
+set directory=~/.vim/.swp//         " Directory for swap files specified
 set undofile                        " Persistent undo enabled
 
 set foldmethod=syntax               " Automatic fold creation from syntax
