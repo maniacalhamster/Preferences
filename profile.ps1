@@ -30,20 +30,24 @@ $profile =      "$env:userprofile\Documents\WindowsPowershell\profile.ps1"
 $ubuntu =       "$env:userprofile\Documents\Virtual Machines\UbuntuServer64\UbuntuServer64.vbox"
 $repos=         "$env:userprofile\GIT"
 
-sal vi vim
-sal type gcm
-sal unzip expand-archive
-sal lsblk get-disk
-sal lspart get-partition
-sal lsvol get-volume
+sal vi      vim
+sal type    gcm
+sal unzip   expand-archive
+sal lsblk   get-disk
+sal lspart  get-partition
+sal lsvol   get-volume
 sal grep    findstr
-sal makenmake
+sal         makenmake
 
-sal edg 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
-sal vm'C:\Program Files (x86)\VMware\VMware Workstation\VMRun.exe'
+sal chrme 	'C:\Program Files (x86)\Google\Chrome\Application\Chrome.exe' 
+sal edg 	'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+sal word 	'C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE'
+sal vm		'C:\Program Files (x86)\VMware\VMware Workstation\VMRun.exe'
+sal cam		'C:\Program Files (x86)\DroidCam\DroidCamApp.exe'
 
-sal spotify"$env:appdata\Spotify\spotify.exe"
-sal zoom "$env:appdata\Zoom\bin\Zoom.exe"
+sal spotify 	"$env:appdata\Spotify\spotify.exe"
+sal zoom    	"$env:appdata\Zoom\bin\Zoom.exe"
+sal sumatraPDF  sumatraPDF-3.2-64
 
 # -------------------------- Function Definitions -----------------------------
 function uedge($val){
@@ -77,11 +81,11 @@ function sudo() {
     }
 }
 function bing() {
-    $search = $args[0]
-        for ($i=1; $i -lt $args.length; $i++) { $search += "+"+$args[$i] }
-    $search = "bing.com/search?q=$search"
-        echo $search
-        edge $search
+    $search = $args[0];
+    for ($i=1; $i -lt $args.length; $i++) { $search += "+"+$args[$i] };
+    $search = "bing.com/search?q=$search";
+    Write-Host $search;
+    Write-Host $search;
 }
 function ubuntu(){
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew();
