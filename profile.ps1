@@ -123,9 +123,9 @@ function bing() {
 function ubuntu(){
     $time = 0;
 
-    if(!((Get-Job -Command "*vboxheadless -s*{using:ubuntu}").State -eq "Running")){
+    if(!(Get-Process | ? Name -Match "VBoxHeadless" | ? CommandLine -Match "VBoxHeadless.exe`" -s .*UbuntuServer64.vbox")){
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew();
-        Start-Job {VBoxHeadless -s $using:ubuntu};
+        Start-Process VBoxHeadless -WindowStyle Hidden -ArgumentList("-s `"$ubuntu`"");
 
         Write-Host -NoNewline "`nWaiting for bootup";
         while(!(Test-Connection ubuntu -TimeoutSeconds 1.5 -Count 1 -Quiet)) {
