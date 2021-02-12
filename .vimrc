@@ -6,7 +6,7 @@ set pythonthreedll=python39.dll     " Set Python 3 DLL to be used
 set encoding=utf-8                  " Set vim to use utf-8 encoding
 
 " Required for Vundle =========================================================
-set nocompatible                    " No strict compatibility w/ vi (cool stuff)
+set nocompatible                    " No strict compatability w/ vi (cool stuff)
 filetype off                        " Temporary?        -Required for Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
 
