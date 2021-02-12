@@ -35,6 +35,18 @@ cd HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\
 Set-ItemProperty -Path $user.SID -Name ProfileImagePath -Value '[new home dir here]'
 ```
 
+Quick note that a similar method can be used to modify the path env var from
+powershell, ideally testing it out om the temporary env vars before commiting
+to registry:
+
+```
+$env:path+='[modification to path here]'
+Set-ItemProperty -Path HKCU:\Environment -Name Path -Value $env:path
+```
+
+For system env path rather than user env path, use path:   
+`HKLM:\SOFTWARE\DefaultUserEnvironment`
+
 # Rename home directory
 
 Once you've changed the user's name and the path to home directory in regsitry,
