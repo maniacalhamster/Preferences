@@ -1,3 +1,6 @@
+# Windows powershell v7 profile, used in tandem with Windows terminal
+#
+# Last updated: April 30, 2021
 Write-Host "
                __      __         _                                    
    o O O       \ \    / /  ___   | |   __    ___    _ __     ___ 
