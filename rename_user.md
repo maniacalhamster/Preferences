@@ -16,7 +16,7 @@ of powershell commandlets.
 Above command has been improved upon with the Get-CimInstance cmdlet as:
 ` $user = Get-CimInstance Win32_Account | Where-Object Name -Like '[query here]' `   
 for retrieval of an account, followed by Invoke-CimMethod for modification:
-` Invoke-CimMethod -InputObject $user -MethodName "Rename" -Arguments {@name='[new name here]'} `
+` Invoke-CimMethod -InputObject $user -MethodName "Rename" -Arguments @{name='[new name here]'} `
 
 This will rename the user account (can verify by running Get-CimInstance w/ new
 name or by running `Net User`)
