@@ -30,6 +30,7 @@ $repos=         "$env:userprofile\GIT"
 $default =      "$env:localappdata\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\default.json"
 $settings =     "$env:localappdata\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
 $programs =     "$env:localappdata\Programs"
+$hosts =        "\Windows\System32\drivers\etc\host"
 
 sal vi      vim
 sal type    gcm
@@ -190,11 +191,6 @@ function devenv(){
 # Shamelessly copied code below
 # -----------------------------------------------------------------------------
 
-# Simplify the process of a making a symbolic link to a single function
-function mklink ($target, $link) {
-    New-Item -Path $link -ItemType SymbolicLink -Value $target
-}
-
 # readline configuration. Requires version 2.0, if you have 1.2 convert to `Set-PSReadlineOption -TokenType`
 Set-PSReadlineOption -Color @{
     "Command" = [ConsoleColor]::White;
@@ -213,3 +209,34 @@ $global:PSColor.File.Directory.Color='Blue'
 $global:PSColor.File.Executable.Color='Green'
 $global:PSColor.File.Compressed.Color='Red'
 $global:PSColor.File.Code.Color='Cyan'
+
+# Function to set machine to a sleep state
+# - [System.Windows.Forms.PowerState]::Suspend -> "Suspend"
+#       Check the PowerState enumeration for other options
+# - param2 $false gives time for apps to prep for sleep
+# - param3 $false allows wake events (scheduled or WOL) to wake machine
+# 
+# - Returns success/failure on wakeup > redirected to null 
+function Sleep-Computer() {
+    Add-Type -Assembly System.Windows.Forms;
+    [System.Windows.Forms.Application]::SetSuspendState("Suspend", $false, $false) | Out-Null;
+}
+
+# Function to generate a magic packet to send to Wakeup Over Lan
+# - Takes in MAC & IP adresses and port number
+# - Byte array casting of 1B of 0xFF (255) values x 6 times followed by
+#       the 6B MAC address x 16 times to generate packet
+#
+# - UDP client created to send the packet to given IP + Port combo, and closed afterwards
+#
+# - Returns packet length -> redirected to null
+function WOL($MAC, $IP, $Port) {
+    $MagicPacket = [Byte[]] (,0xFF * 6) + 
+        (($MAC -split '[:-]' | ForEach-Object {[Byte] "0x$_"}) * 16);
+
+    $UdpClient = New-Object System.Net.Sockets.UdpClient;
+
+    $UdpClient.Connect(([System.Net.IpAddress]::Parse($IP)), $Port);
+    $UdpClient.Send($MagicPacket, $MagicPacket.Length) | Out-Null;
+    $UdpClient.Close();
+}
