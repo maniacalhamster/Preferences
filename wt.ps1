@@ -1,5 +1,5 @@
 Write-Host " - Making sure wt.exe runs as expected before making a shortcut to it!"
-Start-Process -WindowStyle hidden "$env:localappdata\Microsoft\WindowsApps\wt.exe"
+Start-Process -WindowStyle hidden "$env:localappdata\Microsoft\WindowsApps\Microsoft.WindowsTerminal_8wekyb3d8bbwe\wt.exe"
 
 Write-Host "Creating an instance of WScript.Shell object, referred to as 'shell'"
 $shell = New-Object -ComObject WScript.Shell
@@ -19,14 +19,14 @@ Write-Host "`tthis is used to set the IconLocation of the link"
 $wt.IconLocation=(Get-Process | Where-Object ProcessName -Like 'windowsterminal')[0].Path
 
 Write-Host " - Setting targetPath to point to the wt.exe this link will run"
-$wt.TargetPath="$env:localappdata\Microsoft\WindowsApps\wt.exe"
+$wt.TargetPath="$env:localappdata\Microsoft\WindowsApps\Microsoft.WindowsTerminal_8wekyb3d8bbwe\wt.exe"
 
 Write-Host " - Setting the workingdirectory (not necesarry) to the location of the wt.exe"
 $wt.WorkingDirectory="$env:localappdata\Microsoft\WindowsApps"
 
 Write-Host "`nConfirm wt shortcut properties to be correct:"
 Write-Host "---------------------------------------------"
-Write-Host $wt
+$wt
 $inp = Read-Host
 
 Write-Host "Saving wt obj to effectively write the changes in"
