@@ -33,7 +33,7 @@ $repos=         "$env:userprofile\GIT"
 $default =      "$env:localappdata\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\default.json"
 $settings =     "$env:localappdata\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
 $programs =     "$env:localappdata\Programs"
-$hosts =        "\Windows\System32\drivers\etc\host"
+$hosts =        "\Windows\System32\drivers\etc\hosts"
 
 sal vi      vim
 sal type    gcm
@@ -102,11 +102,12 @@ function la{
 # -- Else, assumes a particular command was issued and runs it w/ admin priv.
 # -- -- Both will first change working directory to current directory first
 function sudo() {
+    $exec = [System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName;
     if($args[0].length -eq 0 -or $args[0] -eq 'su'){
-        start pwsh -Verb runas -ArgumentList ('-NoExit', '-Command', "cd `'$(pwd)`'")
+        Start-Process -WorkingDirectory . -Verb runas $exec -ArgumentList '-NoExit'
     }
     else{
-        start pwsh -Verb runas -ArgumentList ('-Command', "cd `'$(pwd)`';", "$args")
+        Start-Process -WorkingDirectory . -Verb runas $exec -ArgumentList '-Command', $args
     }
 }
 
@@ -189,6 +190,11 @@ function devenv(){
         }
     sal make nmake;
     popd;
+}
+
+# Runs opens up vscode to path specified in the background (either file or folder)
+function vscode($path) {
+    (& "$env:localappdata\Programs\Microsoft VS Code\Code.exe" $path)&;
 }
 
 # Shamelessly copied code below
