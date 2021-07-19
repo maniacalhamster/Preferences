@@ -57,7 +57,12 @@ set nowrap                          " No line wrapping - ugly w/ line numbering
 " nmap j gj                         " Mappings for more natural line movement
 " nmap k gk                         " In the odd chance I do want line wrapping
 
-" Coloring options
+set backspace=indent,eol,start      " Makes backspace work like normal
+set showmatch                       " Shows matching delims () {} []j
+set nojoinspaces                    " No whitespaces after .?! using (J)oin
+set virtualedit+=onemore            " Cursor appears to be after current letter
+
+# Coloring options
 syntax on                           " Syntax highlighting on
 color onedark                       " preferred colorscheme here
 
@@ -85,6 +90,7 @@ set sidescrolloff=15                " horizontal scroll offset at 15
 " Fold options
 set foldmethod=syntax               " Automatic fold creation from syntax
 set foldlevel=2                     " Auto fold lvl 2 and beyond with ^ method
+
 " Mapping spacebar to (recursively if needed) toggle folds encountered
 nnoremap <silent><space> za
 " nnoremap <Tab> zajzA                " For JSON: close fold and open next fold
@@ -102,6 +108,7 @@ nnoremap <C-L> :nohl <CR><C-L>
 
 
 " Misc options
+imap jj <Esc>
 set backspace=indent,eol,start      " Makes backspace work like normal
 set showmatch                       " Shows matching delims () {} []j
 set nojoinspaces                    " No whitespaces after .?! using (J)oin
