@@ -1,5 +1,5 @@
 " Personal Preferences for vim on Windows 10 + Ubuntu Servers (VMs and school)
-" Tue July 6, 2021
+" Mon July 19, 2021
 
 set rtp+=~/.vim                     " Add .vim directory to runtime path
 set encoding=utf-8                  " Set vim to use utf-8 encoding
