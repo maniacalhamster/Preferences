@@ -49,12 +49,12 @@ set expandtab                       " Replace tabs with spaces - universal supp
 " Line wrapping options
 set nowrap                          " No line wrapping - ugly w/ line numbering
 
-" set wrap                          
-" nmap j gj                         " Mappings for more natural line movement
-" nmap k gk                         " In the odd chance I do want line wrapping
+" Mappings for more natural line movement in case line get wrapped elsewhere
+nmap j gj
+nmap k gk
 
 set backspace=indent,eol,start      " Makes backspace work like normal
-set showmatch                       " Shows matching delims () {} []j
+set showmatch                       " Shows matching delims () {} []
 set nojoinspaces                    " No whitespaces after .?! using (J)oin
 set virtualedit+=onemore            " Cursor appears to be after current letter
 
