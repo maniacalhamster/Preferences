@@ -1,5 +1,5 @@
 " Personal Preferences for vim on Windows 10 + Ubuntu Servers (VMs and school)
-" Mon July 19, 2021
+" Sat September 30, 2023
 
 set rtp+=~/.vim                     " Add .vim directory to runtime path
 set encoding=utf-8                  " Set vim to use utf-8 encoding
@@ -14,13 +14,9 @@ call vundle#begin('~/.vim/bundle')  " Add plugins between Vundle# begin and end
 " Vundle Plugin Manager installed using Vundle          -Required for Vundle
 " Onedark Color/Theme   installed using Vundle
 " pscript syntax plugin installed using Vundle
-" YouCompleteMe Plugin  installed using Vundle
-" LaTeX plugin          installed using Vundle
 Plugin 'VundleVim/Vundle.vim'  
 Plugin 'joshdick/onedark.vim'
 Plugin 'pprovost/vim-ps1'
-Plugin 'ycm-core/YouCompleteMe'
-Plugin 'lervag/vimtex'
 
 call vundle#end()
 filetype plugin indent on           " Turn on plugin?   - Required for Vundle
@@ -97,7 +93,8 @@ nnoremap <silent><space> za
 " nnoremap <S-Tab> zakzA              " For JSON: close fold and open prev fold
 
 " For JSON: define macro for pretty-fying current (JSON) file
-let @p=':%!python -m json.tool'
+let @p=':%!python -m json.tool
+'
 
 " Highlighting options
 set incsearch                       " Enable incremental searching (substrings)
