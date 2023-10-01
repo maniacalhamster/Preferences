@@ -1,5 +1,5 @@
 " Personal Preferences for vim on Windows 10 + Ubuntu Servers (VMs and school)
-" Sat September 30, 2023
+" Sun October 1, 2023
 
 set rtp+=~/.vim                     " Add .vim directory to runtime path
 set encoding=utf-8                  " Set vim to use utf-8 encoding
@@ -14,7 +14,7 @@ call vundle#begin('~/.vim/bundle')  " Add plugins between Vundle# begin and end
 " Vundle Plugin Manager installed using Vundle          -Required for Vundle
 " Onedark Color/Theme   installed using Vundle
 " pscript syntax plugin installed using Vundle
-Plugin 'VundleVim/Vundle.vim'  
+Plugin 'VundleVim/Vundle.vim'
 Plugin 'joshdick/onedark.vim'
 Plugin 'pprovost/vim-ps1'
 
@@ -92,7 +92,10 @@ imap jj <Esc>
 set backspace=indent,eol,start      " Makes backspace work like normal
 set showmatch                       " Shows matching delims () {} []j
 set nojoinspaces                    " No whitespaces after .?! using (J)oin
-
+  
+" remap ctrl+S to save (Normal | Insert)
+inoremap <C-S> <Esc>:w<CR>a
+nnoremap <C-S> :w<CR>
 
 " Drawing much inspiration from GNU screen, the wombo combo of tabs + windows
 " make for a pretty god-tier editing environment with the right hotkeys;
@@ -100,15 +103,15 @@ set nojoinspaces                    " No whitespaces after .?! using (J)oin
 " =============================================================================
 " Opening a new tab made easy with a mapping to Ctrl-A Ctrl-N (like GNU screen)
 " Switching between opened vim tabs mapped to Ctrl-J/Ctrl-K
-nnoremap <C-A><C-N> :tabe 
+nnoremap <C-A><C-N> :tabe
 nnoremap <C-K> :tabn <CR>
 nnoremap <C-J> :tabp <CR>
 
 " Splitting vim windows mapped with Ctrl-A key combos (like GNU screen!)
 " Need to remap substitute line and Ex-Mode to <Nop> for these
-nnoremap <C-A>\| :rightb vs
+nnoremap <C-A>\| :rightb vs 
 nnoremap <S-S> <Nop>
-nnoremap <C-A><S-S> :bel sp
+nnoremap <C-A><S-S> :bel sp 
 nnoremap <S-Q> <Nop>
 nnoremap <C-A><S-Q> :on<CR>
 
