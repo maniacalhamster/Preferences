@@ -7,7 +7,7 @@ Write-Host "
   o             \ \/\/ /  / -_)  | |  / _|  / _ \  | '  \   / -_)
  TS__[O]  _____  \_/\_/   \___|  |_|  \__|  \___/  |_|_|_|  \___|
 {======|_|'''''|_|'''''|_|'''''|_|'|_|'''|_|'''''|_|'''''|_|'''''|
-    ./o--000' '0---0' '0---0' '0---0' '0' '0-0' '0---0' '0---0' 'o---0'
+./o--000' '0---0' '0---0' '0---0' '0' '0-0' '0---0' '0---0' 'o---0'
                            _     _ 
                           / \   | |__   _ _    _ _          O O o
                          | - |  | / /  / _'|  | '_|              o
@@ -28,38 +28,19 @@ Write-Host "
 # -------------------------- Alias Configurations -----------------------------
 rm alias:\type
 
-$profile =      "$env:userprofile\Documents\Powershell\profile.ps1"
 $ubuntu =       "$env:userprofile\Documents\Virtual Machines\UbuntuServer64\UbuntuServer64.vbox"
-$repos=         "$env:userprofile\GIT"
-$default =      "$env:localappdata\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\default.json"
-$settings =     "$env:localappdata\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
-$programs =     "$env:localappdata\Programs"
 $hosts =        "\Windows\System32\drivers\etc\hosts"
 
 sal vi      vim
 sal type    gcm
-sal unzip   expand-archive
-sal lsblk   get-disk
-sal lspart  get-partition
-sal lsvol   get-volume
+sal unzip   Expand-Archive
+sal zip     Compress-Archive
+sal lsblk   Get-Disk
+sal lspart  Get-Partition
+sal lsvol   Get-Volume
 sal grep    findstr
 
-sal edg     'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
-
-sal spotify     "$env:appdata\Spotify\spotify.exe"
-sal zoom        "$env:appdata\Zoom\bin\Zoom.exe"
-sal sumatraPDF  sumatraPDF-3.2-64
-
 # -------------------------- Function Definitions -----------------------------
-
-# Quick way to launch Microsoft's edge browser (specifying between personal and
-# university profiles)
-function uedge($val){
-    edg --profile-directory="Profile 1" $val
-}
-function edge($val){
-    edg --profile-directory="Default" $val
-}
 
 # Simplify the process of navigating through powershell command history
 # (reads content of history from file and pipes it to less function - 
@@ -67,18 +48,6 @@ function edge($val){
 function hist(){
     Get-Content (Get-PSReadLineOption).HistorySavePath | less -N
 }
-
-#                      ## grep machine broke ##
-#
-# [Used to be a function to emulate bash's grep function but it's faulty]
-####function grep(){
-####    begin{
-####        $filter = $args[0];
-####    }
-####    process{
-####        $input | findstr /RX $filter
-####    }
-####}
 
 # Function to emulate bash's touch command
 # -- Creates new file if not exist
@@ -94,63 +63,19 @@ function touch(){
     }
 }
 
-function la{
-    ls -Force;
-}
-
 # Function to emulate bash's sudo command
-# -- If run as is or with 'su', will open up an admin terminal session
+# -- If empty args or "su", will open an admin terminal (wt w/ whatever shell is running)
 # -- Else, assumes a particular command was issued and runs it w/ admin priv.
 # -- -- Both will first change working directory to current directory first
 function sudo() {
+    [CmdletBinding()]Param()
     $exec = [System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName;
-    if($args[0].length -eq 0 -or $args[0] -eq 'su'){
-        Start-Process -WorkingDirectory . -Verb runas $exec -ArgumentList '-NoExit'
+    $psArgs = "-NoExit -Command Set-Location $pwd`n"
+    if($args.length -ne 0 -and ($args.length -ne 1 -or $args[0] -ne 'su')){
+        $psArgs += $args
     }
-    else{
-        Start-Process -WorkingDirectory . -Verb runas $exec -ArgumentList '-Command', $args
-    }
-}
-
-# Simplify the process of making a search using the bing search engine on an 
-# Edge browser
-function bing() {
-    $search = $args[0]
-    for ($i=1; $i -lt $args.length; $i++) { $search += "+"+$args[$i] }
-    $search = "bing.com/search?q=$search"
-    Write-Host $search
-    edge $search
-}
-
-# Automate the task of running a virtual machine in the background and ssh-ing
-# into it once it has booted up (notifying user of bootup in process and timing
-# the whole process as well). Specifically run an ubuntu 20.04 x64 server on 
-# oracle's virtualbox 
-function ubuntu(){
-    $time = 0;
-
-    if(!(Get-Process | ? Name -Match "VBoxHeadless" | ? CommandLine -Match "VBoxHeadless.exe`" -s .*UbuntuServer64.vbox")){
-        $stopwatch = [System.Diagnostics.Stopwatch]::StartNew();
-        Start-Process VBoxHeadless -WindowStyle Hidden -ArgumentList("-s `"$ubuntu`"");
-
-        Write-Host -NoNewline "`nWaiting for bootup";
-        while(!(Test-Connection ubuntu -TimeoutSeconds 1.5 -Count 1 -Quiet)) {
-            Write-Host -NoNewline "...";
-        }
-        Write-Host;
-        $stopwatch.stop();
-        $time = $stopwatch.Elapsed.TotalSeconds;
-    }
-
-    Write-Host "`nUbuntu Startup Time:`t$time seconds";
-    if(!($time)){
-        Write-Host "(was probably already up)`n";
-    }
-    else{
-        Write-Host;
-    }
-
-    ssh ubuntu;
+    Write-Host -Verbose "$exec $psArgs"
+    Start-Process -Verb runas wt -ArgumentList "$exec $psArgs"
 }
 
 # Sets up the MSVC developer environment in current powershell session - just a 
@@ -191,11 +116,6 @@ function devenv(){
         }
     sal make nmake;
     popd;
-}
-
-# Runs opens up vscode to path specified in the background (either file or folder)
-function vscode($path) {
-    (& "$env:localappdata\Programs\Microsoft VS Code\Code.exe" $path)&;
 }
 
 # Shamelessly copied code below
