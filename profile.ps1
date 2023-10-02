@@ -1,4 +1,4 @@
-# Windows powershell v7 profile, used in tandem with Windows terminal
+# My custom Windows Powershell profile
 #
 # Last updated: April 30, 2021
 Write-Host "
@@ -21,6 +21,7 @@ Write-Host "
 #       - Hostname
 #       - IP Address
 #       - Current Time
+#       - Weather info (e.g. Invoke-RestMethod "wttr.in")
 
 # -------------------------- Window Preferences   -----------------------------
 
